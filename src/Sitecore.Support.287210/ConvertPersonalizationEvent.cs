@@ -83,7 +83,13 @@ namespace Sitecore.Support.ContentTesting.Pipelines.ConvertToXConnectInteraction
     private static bool IsOriginal(TestSet testSet, TestCombination combination, Guid roleSetId)
     {
       if (testSet == null || combination == null) return false;
-      var testVariable = testSet.Variables.First(x => x.Id.Equals(roleSetId));
+      var testVariable = testSet.Variables.FirstOrDefault(x => x.Id.Equals(roleSetId));
+
+      if (testVariable == null)
+      {
+        return false;
+      }
+      
       var ruleValue = combination.GetValue(roleSetId);
       return ContentTestingFactory.Instance.TestValueInspector.IsOriginalTestValue(testVariable, ruleValue);
     }
